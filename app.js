@@ -478,8 +478,28 @@ function formatDateTime(value) {
 
 function formatQuizAnswersForEmail() {
   return quizAnswers
-    .map((answer, answerIndex) => `Q${answerIndex + 1}: ${answer.optionLabel}`)
-    .join(" | ");
+    .map((answer) => `${answer.questionTitle}: ${answer.optionLabel}`)
+    .join("\n");
+}
+
+function buildFormcarryQuizFields() {
+  const fields = {
+    cuisine: "Not answered",
+    dessert: "Not answered",
+    quiz_answers: formatQuizAnswersForEmail() || "No quiz answers"
+  };
+
+  quizAnswers.forEach((answer) => {
+    if (answer.questionId === "cuisine") {
+      fields.cuisine = answer.optionLabel;
+    }
+
+    if (answer.questionId === "dessert") {
+      fields.dessert = answer.optionLabel;
+    }
+  });
+
+  return fields;
 }
 
 function isFormcarryConfigured() {
@@ -563,12 +583,16 @@ async function confirmDate(event) {
   setDateFormSubmitting(true);
 
   try {
+    const quizFields = buildFormcarryQuizFields();
+
     await sendDateToFormcarry({
       email,
       date_time: dateTime,
       formatted_date_time: response.formattedDateTime,
       note: note || "No note",
-      quiz_answers: formatQuizAnswersForEmail() || "No quiz answers",
+      cuisine: quizFields.cuisine,
+      dessert: quizFields.dessert,
+      quiz_answers: quizFields.quiz_answers,
       confirmed_at: confirmedAt,
       subject: "Date confirmation 💘"
     });
@@ -576,7 +600,7 @@ async function confirmDate(event) {
     localStorage.setItem("pookieDateResponse", JSON.stringify(response));
 
     const quizSummary = quizAnswers.length
-      ? `<br><strong>Choices:</strong> ${escapeHtml(formatQuizAnswersForEmail())}`
+      ? `<br><strong>Cuisine:</strong> ${escapeHtml(quizFields.cuisine)}<br><strong>Dessert:</strong> ${escapeHtml(quizFields.dessert)}`
       : "";
 
     dateSummary.innerHTML = `
