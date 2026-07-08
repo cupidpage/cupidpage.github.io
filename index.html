@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A date invitation." />
+  <meta name="theme-color" content="#ff6fae" />
+  <title>For You 💘</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Pacifico&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="mood-lock">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true">
+    <span class="heart h1">💗</span>
+    <span class="heart h2">💘</span>
+    <span class="heart h3">💕</span>
+    <span class="heart h4">💖</span>
+    <span class="heart h5">💞</span>
+    <span class="heart h6">💝</span>
+    <span class="heart h7">❤️</span>
+    <span class="butterfly b1">🦋</span>
+    <span class="butterfly b2">🦋</span>
+    <span class="butterfly b3">🦋</span>
+    <span class="sparkle s1">✦</span>
+    <span class="sparkle s2">✧</span>
+    <span class="sparkle s3">✦</span>
+    <span class="sparkle s4">⋆</span>
+    <span class="sparkle s5">✧</span>
+  </div>
+
+  <div id="celebration-layer" class="celebration-layer" aria-hidden="true"></div>
+  <div id="flash-layer" class="flash-layer" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <section class="card screen is-active" id="screen-lock" aria-labelledby="lock-title">
+      <div class="cupid-orbit" aria-hidden="true">
+        <div class="cupid">🐦💘</div>
+      </div>
+      <h1 id="lock-title" class="shine-text">A little secret</h1>
+      <p class="subtitle">Enter the key I left for you.</p>
+
+      <form id="key-form" class="form-stack">
+        <label for="love-key">Secret key</label>
+        <div class="input-wrap">
+          <span aria-hidden="true">🔑</span>
+          <input id="love-key" name="love-key" type="password" autocomplete="off" placeholder="Type it here" required />
+        </div>
+        <p class="error-message" id="key-error" role="alert"></p>
+        <button class="primary-btn" type="submit">Open 💌</button>
+      </form>
+    </section>
+
+    <section class="card screen" id="screen-welcome" aria-labelledby="welcome-title">
+      <div class="mini-scene" aria-hidden="true">
+        <span class="cloud c1">☁️</span>
+        <span class="cloud c2">☁️</span>
+        <span class="floating-heart fh1">💖</span>
+        <span class="floating-heart fh2">✨</span>
+        <span class="floating-heart fh3">💘</span>
+        <span class="big-cupid">👼</span>
+        <span class="arrow">🏹</span>
+      </div>
+      <h2 id="welcome-title" class="shine-text">Hi, my love</h2>
+      <p class="subtitle">Help me plan something beautiful.</p>
+      <button class="primary-btn" id="start-quiz">I’m ready ✨</button>
+    </section>
+
+    <section class="card screen quiz-card" id="screen-quiz" aria-labelledby="quiz-title">
+      <div class="quiz-progress" aria-hidden="true">
+        <div class="quiz-progress-track">
+          <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+        </div>
+        <div class="quiz-steps" id="quiz-steps"></div>
+      </div>
+      <p class="eyebrow" id="quiz-eyebrow">1 / 2</p>
+      <div class="quiz-emoji" id="quiz-emoji" aria-hidden="true">🍝</div>
+      <h2 id="quiz-title" class="shine-text"></h2>
+      <p class="subtitle" id="quiz-subtitle"></p>
+      <div class="quiz-options" id="quiz-options"></div>
+      <p class="nudge-banner quiz-feedback" id="quiz-feedback" role="status" hidden></p>
+    </section>
+
+    <section class="card screen wow-card" id="screen-wow" aria-labelledby="wow-title">
+      <div class="wow-orbit" aria-hidden="true">
+        <span class="wow-ring"></span>
+        <span class="wow-ring wow-ring-outer"></span>
+        <span class="wow-core">💘</span>
+      </div>
+      <h2 id="wow-title" class="shine-text wow-title">Okay… wow.</h2>
+      <p class="subtitle" id="wow-copy">I already love our date.</p>
+      <ul class="wow-answers" id="wow-answers" aria-label="Your choices"></ul>
+      <button class="primary-btn" id="reveal-question">One more thing ✨</button>
+    </section>
+
+    <section class="card screen question-card" id="screen-question" aria-labelledby="question-title">
+      <div class="love-meter" aria-hidden="true">
+        <div class="meter-fill"></div>
+      </div>
+      <h2 id="question-title" class="shine-text">Will you go on a date with me?</h2>
+
+      <div class="button-playground" id="button-playground">
+        <button class="primary-btn yes-btn" id="yes-btn">Yes 💖</button>
+        <button class="ghost-btn no-btn" id="no-btn" type="button">No 🙈</button>
+      </div>
+
+      <p class="nudge-banner" id="no-message" role="status" hidden></p>
+    </section>
+
+    <section class="card screen" id="screen-date" aria-labelledby="date-title">
+      <div class="date-icon" aria-hidden="true">💐</div>
+      <h2 id="date-title" class="shine-text">When?</h2>
+      <p class="subtitle">Pick a time that feels right.</p>
+
+      <form id="date-form" class="form-stack">
+        <label for="date-time">Date & time</label>
+        <div class="input-wrap">
+          <span aria-hidden="true">🗓️</span>
+          <input id="date-time" name="date-time" type="datetime-local" required />
+        </div>
+
+        <label for="email">Your email</label>
+        <div class="input-wrap">
+          <span aria-hidden="true">💌</span>
+          <input id="email" name="email" type="email" placeholder="you@email.com" required />
+        </div>
+
+        <label for="note">A note for me <span class="optional-tag">optional</span></label>
+        <textarea id="note" name="note" rows="3" placeholder="Anything you want to say…"></textarea>
+
+        <p class="error-message" id="date-error" role="alert"></p>
+        <button class="primary-btn" id="confirm-date-btn" type="submit">Confirm 💘</button>
+      </form>
+    </section>
+
+    <section class="card screen success-card" id="screen-success" aria-labelledby="success-title">
+      <div class="heart-burst" aria-hidden="true">
+        <span>💖</span><span>💘</span><span>💕</span><span>💞</span><span>💗</span><span>✨</span>
+      </div>
+      <h2 id="success-title" class="shine-text love-finale">I love you</h2>
+      <p class="subtitle" id="success-copy">It’s a date.</p>
+      <div class="summary" id="date-summary"></div>
+      <button class="ghost-btn" id="restart-btn">Start over</button>
+    </section>
+  </main>
+
+  <footer class="footer-note">
+    © Made with love by Sudip Kandel
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
