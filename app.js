@@ -1,47 +1,9 @@
-// Change this to whatever secret key you want her to type.
-// Keep it simple because this is only a cute static website, not real authentication.
-const SECRET_LOVING_KEY = "sudiplovesyou";
-
-// Public Formcarry form endpoint (safe to use in frontend).
-// Do not put your Formcarry API key in this file — it would be visible to anyone.
-const FORMCARRY_ENDPOINT = "https://formcarry.com/s/JTMxGGywkV3";
-
 const CONFIRM_BUTTON_DEFAULT_LABEL = "Confirm 💘";
 const CONFIRM_BUTTON_LOADING_LABEL = "Sending…";
 const DEFAULT_NO_MESSAGE = "";
 const DEFAULT_YES_LABEL = "Yes 💖";
 const QUIZ_FEEDBACK_HOLD_MS = 720;
 const WOW_REVEAL_HOLD_MS = 900;
-
-const QUIZ_QUESTIONS = [
-  {
-    id: "cuisine",
-    eyebrow: "1 / 2",
-    emoji: "🍝",
-    title: "What cuisine do you want?",
-    subtitle: "",
-    options: [
-      { id: "italian", label: "Italian 🍝", reaction: "Perfect." },
-      { id: "japanese", label: "Japanese 🍣", reaction: "Yes." },
-      { id: "indian", label: "Indian 🍛", reaction: "Love that." },
-      { id: "chinese", label: "Chinese 🥟", reaction: "Noted." },
-      { id: "thai", label: "Thai 🍜", reaction: "Great pick." },
-      { id: "surprise", label: "Surprise me 🎁", reaction: "I’ve got you." }
-    ]
-  },
-  {
-    id: "dessert",
-    eyebrow: "2 / 2",
-    emoji: "🍰",
-    title: "Dessert?",
-    subtitle: "",
-    options: [
-      { id: "cake", label: "Cake 🍰", reaction: "Sweet." },
-      { id: "icecream", label: "Ice cream 🍦", reaction: "Cute." },
-      { id: "skip", label: "Just us 💕", reaction: "Even better." }
-    ]
-  }
-];
 
 const NO_ESCAPE_MESSAGES = [
   "Try Yes 💖",
@@ -51,14 +13,13 @@ const NO_ESCAPE_MESSAGES = [
   "Come on… Yes 💘"
 ];
 
-const SUCCESS_LINES = [
-  "It’s a date.",
-  "I can’t wait.",
-  "See you soon.",
-  "My favorite yes."
-];
-
 const CELEBRATION_EMOJIS = ["💖", "💘", "💕", "💗", "✨", "🌸", "🦋", "⭐", "💝", "💞"];
+
+const activeExperience = resolveActiveExperience(window.location);
+let SECRET_LOVING_KEY = activeExperience.secretKey;
+let FORMCARRY_ENDPOINT = activeExperience.formcarry;
+let QUIZ_QUESTIONS = activeExperience.questions;
+let SUCCESS_LINES = activeExperience.successLines;
 
 const SCREEN_MOODS = {
   lock: "mood-lock",
@@ -111,12 +72,68 @@ const restartBtn = document.querySelector("#restart-btn");
 const celebrationLayer = document.querySelector("#celebration-layer");
 const flashLayer = document.querySelector("#flash-layer");
 const wowCard = document.querySelector("#screen-wow");
+const lockTitle = document.querySelector("#lock-title");
+const welcomeTitle = document.querySelector("#welcome-title");
+const questionTitle = document.querySelector("#question-title");
+const dateTitle = document.querySelector("#date-title");
+const successTitle = document.querySelector("#success-title");
+const lockSubtitle = document.querySelector("#screen-lock .subtitle");
+const welcomeSubtitle = document.querySelector("#screen-welcome .subtitle");
+const dateSubtitle = document.querySelector("#screen-date .subtitle");
+const experienceBadge = document.querySelector("#experience-badge");
 
 let noAttempts = 0;
 let isSubmittingDate = false;
 let currentQuizIndex = 0;
 let isQuizAdvancing = false;
 const quizAnswers = [];
+
+function getUnlockStorageKey() {
+  return `pookiePortalUnlocked:${activeExperience.id}`;
+}
+
+function applyExperienceTheme(experience) {
+  document.title = experience.documentTitle || experience.title || "For You";
+  document.body.dataset.experience = experience.id || "default";
+  document.body.dataset.template = experience.template || "date-night";
+  document.documentElement.style.setProperty("--pink-main", experience.accent || "#ff6fae");
+  document.documentElement.style.setProperty("--theme-accent", experience.accent || "#ff6fae");
+
+  if (lockTitle) {
+    lockTitle.textContent = experience.lockTitle;
+  }
+  if (lockSubtitle) {
+    lockSubtitle.textContent = experience.lockSubtitle;
+  }
+  if (welcomeTitle) {
+    welcomeTitle.textContent = experience.welcomeTitle;
+  }
+  if (welcomeSubtitle) {
+    welcomeSubtitle.textContent = experience.welcomeSubtitle;
+  }
+  if (startQuizBtn) {
+    startQuizBtn.textContent = experience.startLabel;
+  }
+  if (questionTitle) {
+    questionTitle.textContent = experience.proposalTitle;
+  }
+  if (dateTitle) {
+    dateTitle.textContent = experience.dateTitle;
+  }
+  if (dateSubtitle) {
+    dateSubtitle.textContent = experience.dateSubtitle;
+  }
+  if (successTitle) {
+    successTitle.textContent = experience.successTitle;
+  }
+  if (wowCopy) {
+    wowCopy.textContent = experience.wowCopy;
+  }
+  if (experienceBadge) {
+    experienceBadge.textContent = experience.title;
+    experienceBadge.hidden = false;
+  }
+}
 
 function setMood(screenName) {
   Object.values(SCREEN_MOODS).forEach((moodClass) => {
@@ -296,7 +313,7 @@ function openWowMoment() {
     wowAnswers.appendChild(item);
   });
 
-  wowCopy.textContent = "I already love our date.";
+  wowCopy.textContent = activeExperience.wowCopy;
   wowCard.classList.remove("is-exploding");
   void wowCard.offsetWidth;
   wowCard.classList.add("is-exploding");
@@ -333,7 +350,7 @@ function unlockPortal(event) {
     return;
   }
 
-  localStorage.setItem("pookiePortalUnlocked", "true");
+  localStorage.setItem(getUnlockStorageKey(), "true");
   keyError.textContent = "";
   keyInput.value = "";
   triggerFlash();
@@ -484,19 +501,14 @@ function formatQuizAnswersForEmail() {
 
 function buildFormcarryQuizFields() {
   const fields = {
-    cuisine: "Not answered",
-    dessert: "Not answered",
-    quiz_answers: formatQuizAnswersForEmail() || "No quiz answers"
+    quiz_answers: formatQuizAnswersForEmail() || "No quiz answers",
+    experience_id: activeExperience.id,
+    experience_title: activeExperience.title,
+    template: activeExperience.template || "date-night"
   };
 
   quizAnswers.forEach((answer) => {
-    if (answer.questionId === "cuisine") {
-      fields.cuisine = answer.optionLabel;
-    }
-
-    if (answer.questionId === "dessert") {
-      fields.dessert = answer.optionLabel;
-    }
+    fields[answer.questionId] = answer.optionLabel;
   });
 
   return fields;
@@ -584,28 +596,34 @@ async function confirmDate(event) {
 
   try {
     const quizFields = buildFormcarryQuizFields();
+    const choiceSummary = quizAnswers
+      .map((answer) => `<br><strong>${escapeHtml(answer.questionTitle)}:</strong> ${escapeHtml(answer.optionLabel)}`)
+      .join("");
 
     await sendDateToFormcarry({
       email,
       date_time: dateTime,
       formatted_date_time: response.formattedDateTime,
       note: note || "No note",
-      cuisine: quizFields.cuisine,
-      dessert: quizFields.dessert,
+      experience_id: quizFields.experience_id,
+      experience_title: quizFields.experience_title,
+      template: quizFields.template,
       quiz_answers: quizFields.quiz_answers,
       confirmed_at: confirmedAt,
-      subject: "Date confirmation 💘"
+      subject: activeExperience.formSubject || "Date confirmation 💘",
+      ...Object.fromEntries(
+        quizAnswers.map((answer) => [answer.questionId, answer.optionLabel])
+      )
     });
 
-    localStorage.setItem("pookieDateResponse", JSON.stringify(response));
-
-    const quizSummary = quizAnswers.length
-      ? `<br><strong>Cuisine:</strong> ${escapeHtml(quizFields.cuisine)}<br><strong>Dessert:</strong> ${escapeHtml(quizFields.dessert)}`
-      : "";
+    localStorage.setItem(
+      `pookieDateResponse:${activeExperience.id}`,
+      JSON.stringify(response)
+    );
 
     dateSummary.innerHTML = `
       <strong>When:</strong> ${formatDateTime(dateTime)}<br>
-      <strong>Email:</strong> ${escapeHtml(email)}${note ? `<br><strong>Note:</strong> ${escapeHtml(note)}` : ""}${quizSummary}
+      <strong>Email:</strong> ${escapeHtml(email)}${note ? `<br><strong>Note:</strong> ${escapeHtml(note)}` : ""}${choiceSummary}
     `;
 
     successCopy.textContent = pickRandomItem(SUCCESS_LINES);
@@ -647,6 +665,7 @@ noBtn.addEventListener("touchstart", handleNoPointerMove, { passive: false });
 dateForm.addEventListener("submit", confirmDate);
 restartBtn.addEventListener("click", restartExperience);
 
+applyExperienceTheme(activeExperience);
 setMinimumDateTime();
 showScreen("lock");
 keyInput.focus();

@@ -797,6 +797,38 @@ textarea:focus {
   font-weight: 800;
 }
 
+.footer-link {
+  color: var(--pink-deep);
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  text-decoration: underline;
+}
+
+.experience-badge {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(232, 67, 147, 0.2);
+  color: var(--pink-deep);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  z-index: 2;
+}
+
+body[data-template="travel"] {
+  --pink-main: #14b8a6;
+  --pink-deep: #0f766e;
+}
+
 .ambient {
   position: fixed;
   inset: 0;

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ideation builder for romantic invite experiences on GitHub Pages." />
+  <meta name="theme-color" content="#ff6fae" />
+  <title>Create experience · Ideation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Pacifico&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="create.css" />
+</head>
+<body class="create-page">
+  <main class="create-shell">
+    <header class="create-header">
+      <p class="eyebrow">Ideation tool — not saved to a server</p>
+      <h1 class="shine-text">Create an experience</h1>
+      <p class="subtitle">
+        Design a quiz invite for a date or trip. Preview locally via a link, or download JSON to paste into
+        <code>experiences.js</code> and redeploy.
+      </p>
+      <p class="create-warning">
+        GitHub Pages cannot store accounts. Durable multi-user sharing still means editing
+        <code>experiences.js</code> and pushing — or a future SaaS backend.
+      </p>
+    </header>
+
+    <form id="create-form" class="create-card form-stack">
+      <label for="experience-id">Experience id (slug)</label>
+      <div class="input-wrap">
+        <span aria-hidden="true">🔗</span>
+        <input id="experience-id" name="experience-id" type="text" placeholder="e.g. travel-alex" required />
+      </div>
+
+      <label for="template">Template</label>
+      <select id="template" name="template" class="create-select">
+        <option value="date-night">Date night</option>
+        <option value="travel">Travel planning</option>
+      </select>
+
+      <label for="title">Title</label>
+      <div class="input-wrap">
+        <span aria-hidden="true">✨</span>
+        <input id="title" name="title" type="text" placeholder="Travel with me" required />
+      </div>
+
+      <label for="secret-key">Secret key</label>
+      <div class="input-wrap">
+        <span aria-hidden="true">🔑</span>
+        <input id="secret-key" name="secret-key" type="text" placeholder="letsgo" required />
+      </div>
+
+      <label for="formcarry">Formcarry URL</label>
+      <div class="input-wrap">
+        <span aria-hidden="true">💌</span>
+        <input id="formcarry" name="formcarry" type="url" placeholder="https://formcarry.com/s/XXXX" required />
+      </div>
+
+      <label for="accent">Accent color</label>
+      <div class="input-wrap">
+        <span aria-hidden="true">🎨</span>
+        <input id="accent" name="accent" type="text" value="#ff6fae" required />
+      </div>
+
+      <fieldset class="create-fieldset">
+        <legend>Question 1</legend>
+        <label for="q1-title">Title</label>
+        <input id="q1-title" name="q1-title" type="text" required />
+        <label for="q1-emoji">Emoji</label>
+        <input id="q1-emoji" name="q1-emoji" type="text" maxlength="4" required />
+        <label for="q1-options">Options (one per line: id|Label)</label>
+        <textarea id="q1-options" name="q1-options" rows="5" required></textarea>
+      </fieldset>
+
+      <fieldset class="create-fieldset">
+        <legend>Question 2</legend>
+        <label for="q2-title">Title</label>
+        <input id="q2-title" name="q2-title" type="text" required />
+        <label for="q2-emoji">Emoji</label>
+        <input id="q2-emoji" name="q2-emoji" type="text" maxlength="4" required />
+        <label for="q2-options">Options (one per line: id|Label)</label>
+        <textarea id="q2-options" name="q2-options" rows="4" required></textarea>
+      </fieldset>
+
+      <p class="error-message" id="create-error" role="alert"></p>
+
+      <div class="create-actions">
+        <button class="primary-btn" id="preview-btn" type="button">Open preview link</button>
+        <button class="ghost-btn" id="download-btn" type="button">Download JSON</button>
+        <button class="ghost-btn" id="copy-btn" type="button">Copy experiences.js snippet</button>
+      </div>
+    </form>
+
+    <section class="create-card create-output" aria-labelledby="output-title">
+      <h2 id="output-title">Output</h2>
+      <label for="preview-url">Preview URL</label>
+      <textarea id="preview-url" rows="3" readonly></textarea>
+      <label for="json-output">JSON / snippet</label>
+      <textarea id="json-output" rows="14" readonly></textarea>
+    </section>
+
+    <p class="create-nav">
+      <a class="footer-link" href="index.html">Back to portal</a>
+      ·
+      <a class="footer-link" href="index.html?e=demo">Try travel demo</a>
+    </p>
+  </main>
+
+  <script src="experiences.js"></script>
+  <script src="create.js"></script>
+</body>
+</html>

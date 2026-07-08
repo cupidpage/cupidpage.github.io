@@ -1,53 +1,76 @@
-# Pookie Date Portal 💘
+# Pookie Date Portal (GitHub Pages ideation)
 
-A lightweight static GitHub Pages website for a cute cupid-themed date invitation.
+A static, multi-experience invite playground for planning a **date** or **trip** with a secret key, quiz, runaway No button, and Formcarry confirmation.
+
+This is an **ideation prototype**, not a full SaaS. There is no real login, database, or billing yet.
+
+## Live demos
+
+- Default date night: [https://cupidpage.github.io/](https://cupidpage.github.io/)
+- Travel demo: [https://cupidpage.github.io/?e=demo](https://cupidpage.github.io/?e=demo)
+- Ideation builder: [https://cupidpage.github.io/create.html](https://cupidpage.github.io/create.html)
+
+Default secret key: `sudiplovesyou`  
+Travel demo key: `letsgo`
+
+## How “multi-experience” works on Pages
+
+Creators are simulated with **named configs** in [`experiences.js`](experiences.js), not accounts.
+
+1. Add or edit an object under `EXPERIENCES`.
+2. Push to GitHub Pages.
+3. Share `https://cupidpage.github.io/?e=yourSlug`.
+
+Unknown `?e=` values fall back to `default`.
+
+You can also open a **preview** URL from `create.html` (`?preview=...`). Preview configs live only in the URL — they are not saved on a server.
 
 ## Files
 
-- `index.html` — page structure
-- `style.css` — pink gradient UI, animations, responsive design
-- `app.js` — secret loving key, screen flow, moving No button, Formcarry email
-- `.nojekyll` — tells GitHub Pages not to process this as a Jekyll site
+- `index.html` / `style.css` / `app.js` — invite experience
+- `experiences.js` — date + travel configs + URL resolver
+- `create.html` / `create.css` / `create.js` — static ideation builder
+- `.nojekyll` — GitHub Pages static serving
 
-## Secret loving key
+## Formcarry
 
-The default key is:
+Each experience can set its own `formcarry` URL. Confirms send:
 
-```txt
-sudiplovesyou
-```
+- email, date/time, note
+- experience id / title / template
+- each quiz answer field (e.g. `cuisine`, `dessert`, or `destination`, `budget`)
+- `quiz_answers` summary
 
-To change it, open `app.js` and update:
+Keep your Formcarry **API key** in the dashboard only — never commit it.
 
-```js
-const SECRET_LOVING_KEY = "sudiplovesyou";
-```
+## Pages limits (honest)
 
-The site always opens on the secret key page first.
-## Formcarry email setup
+GitHub Pages cannot:
 
-When she confirms the date, the site sends email, date/time, and note to Formcarry.
+- store per-user accounts
+- persist builder data for everyone globally
+- run Stripe billing
 
-1. Create a form at [formcarry.com](https://formcarry.com)
-2. Copy your unique endpoint from the Setup tab, like `https://formcarry.com/s/XXXXXXXX`
-3. Paste it into `app.js`:
+For durable public experiences today: paste JSON into `experiences.js` and redeploy.  
+`create.html` is for local ideation (preview link / download / copy snippet).
 
-```js
-const FORMCARRY_ENDPOINT = "https://formcarry.com/s/JTMxGGywkV3";
-```
+## Future SaaS path
 
-Formcarry will email you each new submission. Keep your Formcarry API key in the dashboard only — never paste it into `app.js` or commit it to GitHub.
+When ideation validates demand:
 
-## Deploy to GitHub Pages
+- Auth + owned experiences in a database
+- Visual builder UI with true persistence
+- Share links per tenant
+- Stripe subscriptions / freemium
 
-Push these files to the root of:
+Seed that product from the templates already in `experiences.js`.
+
+## Deploy
+
+Push the site root to:
 
 ```txt
 https://github.com/cupidpage/cupidpage.github.io
 ```
 
-Because this is a `username.github.io`-style repository, GitHub Pages can serve the site from the repository root.
-
-## Note
-
-Responses are also saved in the visitor’s browser with `localStorage` as a backup. Email delivery goes through Formcarry, not GitHub Pages itself.
+GitHub Pages serves from `main` `/` → [https://cupidpage.github.io](https://cupidpage.github.io)

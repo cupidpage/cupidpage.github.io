@@ -1,0 +1,119 @@
+.create-page {
+  min-height: 100vh;
+}
+
+.create-shell {
+  width: min(920px, 94vw);
+  margin: 0 auto;
+  padding: 28px 0 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.create-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.create-header h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+}
+
+.create-warning {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(232, 67, 147, 0.2);
+  color: var(--text-muted);
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.create-card {
+  margin: 0 auto 18px;
+  padding: clamp(22px, 4vw, 32px);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.create-card.form-stack {
+  width: 100%;
+  max-width: none;
+  text-align: left;
+}
+
+.create-select,
+.create-card input,
+.create-card textarea {
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 8px;
+  padding: 12px 14px;
+  border: 2px solid rgba(255, 111, 174, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-dark);
+  font: inherit;
+  font-weight: 700;
+}
+
+.create-card textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.create-fieldset {
+  margin: 18px 0 8px;
+  padding: 14px;
+  border: 1px dashed rgba(232, 67, 147, 0.28);
+  border-radius: 18px;
+}
+
+.create-fieldset legend {
+  padding: 0 8px;
+  color: var(--pink-deep);
+  font-weight: 900;
+}
+
+.create-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.create-actions .primary-btn,
+.create-actions .ghost-btn {
+  width: 100%;
+  margin-top: 0;
+}
+
+.create-output h2 {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: 2rem;
+}
+
+.create-output label {
+  display: block;
+  margin: 12px 0 8px;
+  font-weight: 900;
+}
+
+.create-nav {
+  text-align: center;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+@media (min-width: 760px) {
+  .create-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
